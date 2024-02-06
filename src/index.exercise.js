@@ -1,40 +1,51 @@
+import '@reach/dialog/styles.css'
 import * as React from 'react'
 import {createRoot} from 'react-dom/client'
+import {Dialog} from '@reach/dialog'
 import {Logo} from './components/logo'
-import { Dialog } from '@reach/dialog'
 
-const allowedModalStates = {
-    NONE: 'none',
-    LOGIN: 'login',
-    REGISTER: 'register'
+
+function LoginForm(props){
+    function handleSubmit(e){
+        e.preventDefault()
+        console.log(e.target.username.value, e.target.password.value)
+    }
+    return (
+        <form onSubmit={handleSubmit}> 
+             <label htmlFor='username'>Username</label>
+            <input id='username' name='username'/>
+            <label htmlFor='password'>Password</label>
+            <input id='password' type='password' name='password'/>
+            <button type='submit'>Login</button>
+        </form>
+    )
 }
 function App() {
-  const [modal, setModal] = React.useState(allowedModalStates.NONE)
-  const openLogin = () => setModal(allowedModalStates.LOGIN)
-  const openRegister = () => setModal(allowedModalStates.REGISTER)
-  const close = () => setModal(allowedModalStates.NONE)
+  const [openModal, setOpenModal] = React.useState('none')
+ 
   return (
     <div>
       <Logo width="80" height="80" />
       <h1>Bookshelf</h1>
       <div>
-        <button onClick={openLogin}>Login</button>
+        <button onClick={() => setOpenModal('login')}>Login</button>
       </div>
-        <Dialog isOpen={allowedModalStates.LOGIN === modal} onDismiss={close}>
-            <p>Login</p>
-            <button onClick={close}>Close</button>
-        </Dialog>
-     
-
-        <Dialog isOpen={allowedModalStates.REGISTER === modal} onDismiss={close}>
-            <div>
-            <p>Register</p>
-                
-            </div>
-        </Dialog>
       <div>
-        <button onClick={openRegister}>Register</button>
+        <button onClick={() => setOpenModal('register')}>Register</button>
       </div>
+      <Dialog aria-label="Login form" isOpen={openModal === 'login'}>
+        <div>
+          <button onClick={() => setOpenModal('none')}>Close</button>
+        </div>
+        <h3>Login</h3>
+        <LoginForm />
+      </Dialog>
+      <Dialog aria-label="Registration form" isOpen={openModal === 'register'}>
+        <div>
+          <button onClick={() => setOpenModal('none')}>Close</button>
+        </div>
+        <h3>Register</h3>
+      </Dialog>
     </div>
   )
 }
