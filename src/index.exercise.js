@@ -1,34 +1,44 @@
-// 🐨 you'll need to import react and createRoot from react-dom up here
+import * as React from 'react'
+import {createRoot} from 'react-dom/client'
+import {Logo} from './components/logo'
+import { Dialog } from '@reach/dialog'
 
-// 🐨 you'll also need to import the Logo component from './components/logo'
-
-// 🐨 create an App component here and render the logo, the title ("Bookshelf"), a login button, and a register button.
-// 🐨 for fun, you can add event handlers for both buttons to alert that the button was clicked
-
-// 🐨 use createRoot to render the <App /> to the root element
-// 💰 find the root element with: document.getElementById('root')
-import React from "react";
-import { createRoot } from "react-dom/client";
-import { Logo } from "components/logo";
-
-function loginOnClick(){
-    alert('loginClicked')
+const allowedModalStates = {
+    NONE: 'none',
+    LOGIN: 'login',
+    REGISTER: 'register'
 }
+function App() {
+  const [modal, setModal] = React.useState(allowedModalStates.NONE)
+  const openLogin = () => setModal(allowedModalStates.LOGIN)
+  const openRegister = () => setModal(allowedModalStates.REGISTER)
+  const close = () => setModal(allowedModalStates.NONE)
+  return (
+    <div>
+      <Logo width="80" height="80" />
+      <h1>Bookshelf</h1>
+      <div>
+        <button onClick={openLogin}>Login</button>
+      </div>
+        <Dialog isOpen={allowedModalStates.LOGIN === modal} onDismiss={close}>
+            <p>Login</p>
+            <button onClick={close}>Close</button>
+        </Dialog>
+     
 
-function registerClick(){
-    alert('registerClicked')
-}
-
-function App(){
-    return (
-        <>
-            <Logo />
-            <h1>Bookshelf</h1>
-            <button onClick={loginOnClick}>Login</button>
-            <button onClick={registerClick}>register</button>
-        </>
-    )
+        <Dialog isOpen={allowedModalStates.REGISTER === modal} onDismiss={close}>
+            <div>
+            <p>Register</p>
+                
+            </div>
+        </Dialog>
+      <div>
+        <button onClick={openRegister}>Register</button>
+      </div>
+    </div>
+  )
 }
 
 const root = createRoot(document.getElementById('root'))
 root.render(<App />)
+export {root}
