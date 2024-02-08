@@ -8,8 +8,14 @@ import {createRoot} from 'react-dom/client'
 import {Button, Input, FormGroup} from './components/lib'
 import {Modal, ModalContents, ModalOpenButton} from './components/modal'
 import {Logo} from './components/logo'
+import { FaSpinner } from 'react-icons/fa'
+import styled from '@emotion/styled/macro'
 
+const Spinner = styled(FaSpinner)({
+  
+})
 function LoginForm({onSubmit, submitButton}) {
+  
   function handleSubmit(event) {
     event.preventDefault()
     const {username, password} = event.target.elements
@@ -43,6 +49,7 @@ function LoginForm({onSubmit, submitButton}) {
         <Input id="password" type="password" />
       </FormGroup>
       <div>{React.cloneElement(submitButton, {type: 'submit'})}</div>
+      <FaSpinner />
     </form>
   )
 }
